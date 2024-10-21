@@ -1,6 +1,8 @@
 import os
 import json
-from fastapi import FastAPI, HTTPException, status
+import requests
+from fastapi import FastAPI, Response, HTTPException, status
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from typing import List
 
@@ -22,18 +24,29 @@ def load_pic_database(file_path: str):
 
 image_database = load_pic_database('pic_database.json')
 
+@app.head('/')
+async def head_image():
+    response = requests.head('https://imgur.com/VFbImpQ.png')
+    headers = {
+        "Content-Type": response.headers.get("Content-Type", "image/png"),
+        "Content-Length": response.headers.get("Content-Length", "0")
+    }
+    return Response(headers=headers)
+
+
+@app.get('/')
+async def get_image():
+    return RedirectResponse('https://imgur.com/VFbImpQ.png')
+
 
 @app.get('/images/{name}',
          response_model=List[Image],
          status_code=status.HTTP_200_OK)
 async def search_images(name: str):
-
     matched_images = [img for img in image_database if name in img['name']]
-
     if not matched_images:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail='No images found matching the query.')
-
     return matched_images
 
 
