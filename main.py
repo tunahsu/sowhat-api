@@ -23,7 +23,7 @@ def load_pic_database(file_path: str):
 image_database = load_pic_database('pic_database.json')
 
 
-@app.get('/images/',
+@app.get('/images/{name}',
          response_model=List[Image],
          status_code=status.HTTP_200_OK)
 async def search_images(name: str):
@@ -39,4 +39,4 @@ async def search_images(name: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8888)
+    uvicorn.run(app, host='0.0.0.0', port=8777)
