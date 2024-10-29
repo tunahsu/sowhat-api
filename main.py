@@ -3,16 +3,8 @@ import json
 import requests
 from fastapi import FastAPI, Response, HTTPException, status
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
-from typing import List
 
 app = FastAPI()
-
-
-class Image(BaseModel):
-    id: str
-    name: str
-    url: str
 
 
 def load_pic_database(file_path: str):
@@ -23,6 +15,7 @@ def load_pic_database(file_path: str):
 
 
 image_database = load_pic_database('pic_database.json')
+
 
 @app.head('/')
 async def head_image():
@@ -40,7 +33,7 @@ async def get_image():
 
 
 @app.get('/images/{name}',
-         response_model=List[Image],
+         response_model=list[dict],
          status_code=status.HTTP_200_OK)
 async def search_images(name: str):
     matched_images = [img for img in image_database if name in img['name']]
