@@ -17,19 +17,9 @@ def load_pic_database(file_path: str):
 image_database = load_pic_database('pic_database.json')
 
 
-@app.head('/')
-async def head_image():
-    response = requests.head('https://imgur.com/VFbImpQ.png')
-    headers = {
-        "Content-Type": response.headers.get("Content-Type", "image/png"),
-        "Content-Length": response.headers.get("Content-Length", "0")
-    }
-    return Response(headers=headers)
-
-
 @app.get('/')
 async def get_image():
-    return RedirectResponse('https://imgur.com/VFbImpQ.png')
+    return RedirectResponse('https://drive.miyago9267.com/d/file/img/mygo/是又怎樣.jpg')
 
 
 @app.get('/images/{name}',
