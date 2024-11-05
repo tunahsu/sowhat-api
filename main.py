@@ -4,7 +4,7 @@ import requests
 from fastapi import FastAPI, Response, HTTPException, status
 from fastapi.responses import RedirectResponse
 
-app = FastAPI()
+app = FastAPI(openapi_url=None)
 
 
 def load_pic_database(file_path: str):
@@ -19,7 +19,7 @@ image_database = load_pic_database('pic_database.json')
 
 @app.get('/')
 async def get_image():
-    return RedirectResponse('https://drive.miyago9267.com/d/file/img/mygo/是又怎樣.jpg')
+    return RedirectResponse('https://i.imgur.com/l2eWeK3.jpeg')
 
 
 @app.get('/images/{name}',
